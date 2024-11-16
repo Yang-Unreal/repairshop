@@ -1,7 +1,7 @@
-import { HomeIcon, File, UsersRound } from "lucide-react";
+import { NavButton } from "@/components/NavButton";
+import { File, HomeIcon, UsersRound } from "lucide-react";
 import Link from "next/link";
 
-import { NavButton } from "@/components/NavButton";
 export function Header() {
   return (
     <header className="animate-slide bg-background h-12 p-2 border-b sticky top-0 z-20">
@@ -19,7 +19,8 @@ export function Header() {
           </Link>
         </div>
         <div className="flex items-center">
-          <p>Right</p>
+          <NavButton href="/tickets" label="Tickets" icon={File} />
+          <NavButton href="/customers" label="Customer" icon={UsersRound} />
         </div>
       </div>
     </header>
