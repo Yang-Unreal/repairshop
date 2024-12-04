@@ -2,6 +2,16 @@ import CustomerForm from "@/app/(rs)/customers/form/CustomerForm";
 import { BackButton } from "@/components/ui/BackButton";
 import { getCustomer } from "@/lib/queries/getCustomer";
 
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) {
+  const { customerId } = await searchParams;
+  if (!customerId) return { title: "New Customer" };
+  return { title: `Edit Customer #${customerId}` };
+}
+
 export default async function CustomerFormPage({
   searchParams,
 }: {
