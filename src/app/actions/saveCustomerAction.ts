@@ -8,7 +8,7 @@ import {
   type insertCustomerSchemaType,
 } from "@/zod-schemas/customer";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { eq, sql } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { flattenValidationErrors } from "next-safe-action";
 import { redirect } from "next/navigation";
 
