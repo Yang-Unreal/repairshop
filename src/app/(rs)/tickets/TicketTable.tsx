@@ -10,6 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { usePolling } from "@/hooks/usePolling";
 import type { TicketSearchResultsType } from "@/lib/queries/getTicketSearchResults";
 import {
   ColumnFiltersState,
@@ -30,8 +31,8 @@ import {
   CircleCheckIcon,
   CircleXIcon,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useMemo, useState } from "react";
 
 type Props = {
   data: TicketSearchResultsType;
@@ -39,6 +40,8 @@ type Props = {
 type RowType = TicketSearchResultsType[0];
 export default function TicketTable({ data }: Props) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [columnFiIters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([
     {
@@ -46,6 +49,13 @@ export default function TicketTable({ data }: Props) {
       desc: false,
     },
   ]);
+
+  usePolling(searchParams.get("searchText"), 5000);
+
+  const pageIndex = useMemo(() => {
+    const page = searchParams.get("page");
+    return page ? parseInt(page) - 1 : 0;
+  }, [searchParams.get("page")]);
 
   const columnHeadersArray: Array<keyof RowType> = [
     "ticketDate",
