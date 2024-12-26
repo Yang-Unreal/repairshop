@@ -24,6 +24,7 @@ export async function generateMetadata({
       title: `Edit Ticket #${ticketId}`,
     };
 }
+
 export default async function TicketFormPage({
   searchParams,
 }: {
@@ -44,14 +45,18 @@ export default async function TicketFormPage({
     }
 
     const { getPermission, getUser } = getKindeServerSession();
+
     const [managerPermission, user] = await Promise.all([
       getPermission("manager"),
       getUser(),
     ]);
+
     const isManager = managerPermission?.isGranted;
+
     //New ticket form
     if (customerId) {
       const customer = await getCustomer(parseInt(customerId));
+
       if (!customer) {
         return (
           <>
@@ -62,6 +67,7 @@ export default async function TicketFormPage({
           </>
         );
       }
+
       if (!customer.active) {
         return (
           <>
@@ -76,11 +82,18 @@ export default async function TicketFormPage({
       //return ticket form
       if (isManager) {
         kindeInit(); //Initializes the Kinde  Management API
+
         const { users } = await Users.getUsers();
+
         const techs = users
-          ? users.map((user) => ({ id: user.email!, description: user.email! }))
+          ? users.map((user) => ({
+              id: user.email?.toLowerCase()!,
+              description: user.email?.toLowerCase()!,
+            }))
           : [];
-        return <TicketForm customer={customer} techs={techs} />;
+        return (
+          <TicketForm customer={customer} techs={techs} isManager={isManager} />
+        );
       } else {
         return <TicketForm customer={customer} />;
       }
@@ -89,6 +102,7 @@ export default async function TicketFormPage({
     // Edit ticket form
     if (ticketId) {
       const ticket = await getTicket(parseInt(ticketId));
+
       if (!ticket) {
         return (
           <>
@@ -97,6 +111,7 @@ export default async function TicketFormPage({
           </>
         );
       }
+
       const customer = await getCustomer(ticket.customerId);
       // return ticket form
       if (isManager) {
@@ -105,7 +120,14 @@ export default async function TicketFormPage({
         const techs = users
           ? users.map((user) => ({ id: user.email!, description: user.email! }))
           : [];
-        return <TicketForm customer={customer} ticket={ticket} techs={techs} />;
+        return (
+          <TicketForm
+            customer={customer}
+            ticket={ticket}
+            techs={techs}
+            isManager={isManager}
+          />
+        );
       } else {
         const isEditable =
           user.email?.toLowerCase() === ticket.tech.toLowerCase();
