@@ -56,7 +56,7 @@ export default function TicketTable({ data }: Props) {
   const pageIndex = useMemo(() => {
     const page = searchParams.get("page");
     return page ? parseInt(page) - 1 : 0;
-  }, [searchParams.get("page")]);
+  }, [searchParams.get("page")]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const columnHeadersArray: Array<keyof RowType> = [
     "ticketDate",
@@ -170,7 +170,7 @@ export default function TicketTable({ data }: Props) {
       params.set("page", "1");
       router.replace(`?${params.toString()}`, { scroll: false });
     }
-  }, [table.getState().columnFilters]);
+  }, [table.getState().columnFilters]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="mt-6 flex flex-col gap-4">

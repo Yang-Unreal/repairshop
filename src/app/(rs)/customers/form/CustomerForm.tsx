@@ -71,7 +71,7 @@ export default function CustomerForm({ customer, isManager = false }: Props) {
 
   useEffect(() => {
     form.reset(hasCustomerId ? defaultValues : emptyValues);
-  }, [searchParams.get("customerId")]); //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams.get("customerId")]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const {
     execute: executeSave,
